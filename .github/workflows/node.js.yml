@@ -28,18 +28,14 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm install
-  sonarcloud:
-    name: SonarCloud
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+  sonarCloudTrigger:
+    name: SonarCloud Trigger
+    runs-on: macos-latest
     steps:
+      - name: Clone Respository
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+      - name: Analyze with SonarCloud
+        uses: sonarsource/sonarcloud-github-action@v1.3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
